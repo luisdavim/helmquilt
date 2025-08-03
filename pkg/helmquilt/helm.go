@@ -23,7 +23,9 @@ func fetchChart(ctx context.Context, source config.Source, chartDownloadDir stri
 
 	chartDownloadPath := filepath.Join(chartDownloadDir, source.ChartName)
 	if _, err := os.Stat(chartDownloadPath); err == nil {
-		os.RemoveAll(chartDownloadPath)
+		if err := os.RemoveAll(chartDownloadPath); err != nil {
+			return "", err
+		}
 	}
 
 	// the source is a git repository

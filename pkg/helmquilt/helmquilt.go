@@ -35,7 +35,7 @@ func Run(ctx context.Context, action string, opts config.Options) error {
 
 	logger.Println("Updating Chart(s)")
 	tempDir, _ := os.MkdirTemp("", "helmquilt")
-	defer os.RemoveAll(tempDir)
+	defer func() { _ = os.RemoveAll(tempDir) }()
 
 	for _, chart := range needUpdate.Charts {
 		destDir := filepath.Join(opts.WorkDir, chart.Path)
@@ -46,7 +46,9 @@ func Run(ctx context.Context, action string, opts config.Options) error {
 
 		chartDestDir := filepath.Join(destDir, chart.Source.ChartName)
 		if _, err := os.Stat(chartDestDir); err == nil {
-			os.RemoveAll(chartDestDir)
+			if err := os.RemoveAll(chartDestDir); err != nil {
+				return err
+			}
 		}
 
 		logger.Printf("Copying chart to %s\n", chartDestDir)
@@ -86,7 +88,9 @@ func Run(ctx context.Context, action string, opts config.Options) error {
 			if err != nil {
 				return fmt.Errorf("failed to repack %q: %w", chart.GetName(), err)
 			}
-			os.RemoveAll(chartDestDir)
+			if err := os.RemoveAll(chartDestDir); err != nil {
+				return err
+			}
 			logger.Printf("Chart saved to %q; checksum: %q\n", dst, sum)
 		}
 	}

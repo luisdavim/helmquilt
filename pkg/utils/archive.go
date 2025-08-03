@@ -27,7 +27,7 @@ func Compress(src, dst string) (string, error) {
 		return "", err
 	}
 
-	defer f.Close()
+	defer func() { _ = f.Close() }()
 
 	return compress(src, f)
 }
@@ -38,7 +38,7 @@ func Extract(src, dst string) error {
 		return err
 	}
 
-	defer f.Close()
+	defer func() { _ = f.Close() }()
 
 	return extract(f, dst)
 }
@@ -207,7 +207,7 @@ func extract(src io.ReadSeeker, dst string) error {
 			}
 			// manually close here after each file operation; defering would cause each file close
 			// to wait until all operations have completed.
-			fileToWrite.Close()
+			_ = fileToWrite.Close()
 		}
 	}
 

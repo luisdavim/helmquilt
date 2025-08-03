@@ -25,14 +25,14 @@ func Dos2Unix(filename string) error {
 	if err != nil {
 		return err
 	}
-	defer infile.Close()
+	defer func() { _ = infile.Close() }()
 
 	// Write to a temp file
 	tmpfile, err := os.CreateTemp("", "dos2unix")
 	if err != nil {
 		return err
 	}
-	defer tmpfile.Close()
+	defer func() { _ = tmpfile.Close() }()
 
 	reader := bufio.NewReader(infile)
 	writer := bufio.NewWriter(tmpfile)

@@ -15,14 +15,14 @@ func DownloadFile(filepath string, url string) error {
 	if err != nil {
 		return err
 	}
-	defer out.Close()
+	defer func() { _ = out.Close() }()
 
 	// Get the data
 	resp, err := retryablehttp.Get(url)
 	if err != nil {
 		return err
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	// Check server response
 	if resp.StatusCode != http.StatusOK {

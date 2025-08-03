@@ -21,7 +21,7 @@ func DownloadChart(repo, chart, version, dst string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	// Check server response
 	if resp.StatusCode != http.StatusOK {

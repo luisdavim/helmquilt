@@ -35,7 +35,9 @@ func keepOnly(ctx context.Context, destDir string, files []string) error {
 		if err == nil && !info.IsDir() {
 			if !keep[path] {
 				logger.Println("Removing", path)
-				os.RemoveAll(path)
+				if err := os.RemoveAll(path); err != nil {
+					return err
+				}
 			}
 		}
 		return nil
@@ -78,20 +80,22 @@ func applyPatches(ctx context.Context, chart config.Chart, workDir, destDir stri
 
 			tmpfile, err := os.CreateTemp("", "helmquilt")
 			if err != nil {
-				src.Close()
+				_ = src.Close()
 				return fmt.Errorf("failed to create temp file: %w", err)
 			}
 
 			if err := gitdiff.Apply(tmpfile, src, f); err != nil {
-				src.Close()
-				tmpfile.Close()
+				_ = src.Close()
+				_ = tmpfile.Close()
 				return fmt.Errorf("failed to apply patch: %w", err)
 			}
 
-			os.Remove(src.Name())
+			if err := os.Remove(src.Name()); err != nil {
+				return err
+			}
 			err = os.Rename(tmpfile.Name(), f.NewName)
-			src.Close()
-			tmpfile.Close()
+			_ = src.Close()
+			_ = tmpfile.Close()
 			if err != nil {
 				return err
 			}
