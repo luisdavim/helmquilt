@@ -1,0 +1,20 @@
+FROM golang:alpine3.22 as builder
+
+# deinitializing GOPATH as otherwise go modules don't work properly
+ENV GOPATH=""
+
+WORKDIR /app
+
+COPY go.mod go.sum ./
+RUN go mod download
+
+COPY cmd ./cmd
+COPY pkg ./pkg
+COPY main.go ./
+
+RUN CGO_ENABLED=0 GOOS=linux go build -o /helmquilt -trimpath -ldflags="-s -w -extldflags '-static'"
+
+FROM alpine:3.22
+
+COPY --from=builder /helmquilt /
+ENTRYPOINT [ "/helmquilt" ]

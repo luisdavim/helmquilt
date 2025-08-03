@@ -1,0 +1,33 @@
+charts:
+- name: flux2
+  path: charts
+  source:
+    chartName: flux2
+    chartPath: charts
+    url: git@github.com:fluxcd-community/helm-charts.git
+- name: kube-prometheus-stack
+  path: charts
+  remove:
+  - ci
+  - hack
+  - unittests
+  - UPGRADE.md
+  - CONTRIBUTING.md
+  source:
+    chartName: kube-prometheus-stack
+    chartPath: charts
+    url: git@github.com:prometheus-community/helm-charts.git
+- name: coredns
+  patches:
+  - coredns1.patch
+  path: charts
+  source:
+    chartName: coredns
+    url: https://coredns.github.io/helm
+    version: 1.43.0
+- name: redis
+  path: charts
+  source:
+    chartName: redis
+    url: oci://registry-1.docker.io/bitnamicharts
+    version: 21.2.6

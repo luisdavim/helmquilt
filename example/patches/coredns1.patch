@@ -1,0 +1,22 @@
+diff --git a/values.yaml b/values.yaml
+index 09cfada..994eee3 100644
+--- a/values.yaml
++++ b/values.yaml
+@@ -15,7 +15,7 @@ image:
+   # pullSecrets:
+   #   - name: myRegistryKeySecretName
+
+-replicaCount: 1
++replicaCount: 3
+
+ resources:
+   limits:
+@@ -29,7 +29,7 @@ rollingUpdate:
+   maxUnavailable: 1
+   maxSurge: 25%
+
+-terminationGracePeriodSeconds: 30
++terminationGracePeriodSeconds: 35
+
+ podAnnotations: {}
+ #  cluster-autoscaler.kubernetes.io/safe-to-evict: "false"
