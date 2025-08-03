@@ -141,7 +141,9 @@ func extract(src io.ReadSeeker, dst string) error {
 	if err != nil {
 		return err
 	}
-	src.Seek(0, io.SeekStart)
+	if _, err := src.Seek(0, io.SeekStart); err != nil {
+		return err
+	}
 
 	var reader io.Reader = src
 	if isGzipCompressed(testBytes) {

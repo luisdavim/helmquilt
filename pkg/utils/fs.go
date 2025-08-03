@@ -15,12 +15,16 @@ func RemoveEmptyFolders(path string) error {
 	for _, f := range files {
 		fullpath := filepath.Join(path, f.Name())
 		if stat, err := os.Stat(fullpath); err == nil && stat.IsDir() {
-			RemoveEmptyFolders(fullpath)
+			if err := RemoveEmptyFolders(fullpath); err != nil {
+				return err
+			}
 		}
 	}
 	files, _ = os.ReadDir(path)
 	if len(files) == 0 {
-		os.Remove(path)
+		if err := os.Remove(path); err != nil {
+			return err
+		}
 	}
 	return nil
 }
@@ -61,7 +65,9 @@ func CopyDir(src string, dst string) error {
 			}
 		} else {
 			data, _ := os.ReadFile(srcPath)
-			os.WriteFile(dstPath, data, 0o644)
+			if err := os.WriteFile(dstPath, data, 0o644); err != nil {
+				return err
+			}
 		}
 	}
 	return nil

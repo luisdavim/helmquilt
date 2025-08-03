@@ -44,17 +44,19 @@ func Dos2Unix(filename string) error {
 			if err != nil && err != io.EOF {
 				return err
 			}
-			writer.Write(buf)
+			_, _ = writer.Write(buf)
 		}
-		writer.WriteString("\n")
+		_, _ = writer.WriteString("\n")
 		if err == io.EOF {
 			break
 		}
 	}
-	writer.Flush()
+	_ = writer.Flush()
 
 	// Replace the original file with the new one
-	os.Rename(tmpfile.Name(), filename)
+	if err := os.Rename(tmpfile.Name(), filename); err != nil {
+		return err
+	}
 
 	return nil
 }
