@@ -7,7 +7,7 @@ require (
 	github.com/go-git/go-git/v5 v5.16.2
 	github.com/hashicorp/go-retryablehttp v0.7.8
 	github.com/spf13/cobra v1.9.1
-	golang.org/x/mod v0.26.0
+	golang.org/x/mod v0.27.0
 	helm.sh/helm/v3 v3.18.4
 	helm.sh/helm/v4 v4.0.0-20250724191708-a42b76421bbb
 	sigs.k8s.io/yaml v1.6.0
