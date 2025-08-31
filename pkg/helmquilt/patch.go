@@ -31,7 +31,7 @@ func keepOnly(ctx context.Context, destDir string, files []string) error {
 		}
 	}
 
-	if err := filepath.Walk(destDir, func(path string, info fs.FileInfo, err error) error {
+	if err := filepath.WalkDir(destDir, func(path string, info fs.DirEntry, err error) error {
 		if err == nil && !info.IsDir() {
 			if !keep[path] {
 				logger.Println("Removing", path)

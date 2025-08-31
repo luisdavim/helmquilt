@@ -6,6 +6,7 @@ require (
 	github.com/bluekeyes/go-gitdiff v0.8.1
 	github.com/go-git/go-git/v5 v5.16.2
 	github.com/hashicorp/go-retryablehttp v0.7.8
+	github.com/rogpeppe/go-internal v1.14.1
 	github.com/spf13/cobra v1.9.1
 	golang.org/x/mod v0.27.0
 	helm.sh/helm/v3 v3.18.6

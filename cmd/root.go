@@ -30,7 +30,7 @@ func New() *cobra.Command {
 		Use:          "helmquilt <apply|check>",
 		Short:        "helmquilt is a tool for managing helm package patches",
 		Args:         cobra.MatchAll(cobra.ExactArgs(1), cobra.OnlyValidArgs),
-		ValidArgs:    []cobra.Completion{"apply", "check"},
+		ValidArgs:    []cobra.Completion{"apply", "check", "diff"},
 		SilenceUsage: true,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var err error

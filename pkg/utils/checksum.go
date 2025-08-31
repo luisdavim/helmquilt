@@ -39,7 +39,7 @@ func FileChecksum(path string) (string, error) {
 
 func DirChecksum(path string) (string, error) {
 	var checksums []string
-	err := filepath.Walk(path, func(file string, info fs.FileInfo, err error) error {
+	err := filepath.WalkDir(path, func(file string, info fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}

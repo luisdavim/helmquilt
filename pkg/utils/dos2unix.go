@@ -9,7 +9,7 @@ import (
 )
 
 func Dos2UnixDir(path string) error {
-	return filepath.Walk(path, func(file string, info fs.FileInfo, err error) error {
+	return filepath.WalkDir(path, func(file string, info fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
