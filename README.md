@@ -41,3 +41,5 @@ and check the [example](./example/) folder for a sample configuration file.
 
 If latter you want to add more changes, just make the changes you need, run `helmquilt diff`, create new patch files, add them to the config and run `helmquilt apply` to update the lock file.
 If you keep your patched chart(s) in git, you can also use `git diff` instead of `helmquilt diff` to create the patche files.
+
+In the `example` folder the `example/patches/coredns1.patch` was created using `git diff` and `example/patches/flux.patch` was created using `helmquilt diff`.

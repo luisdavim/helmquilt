@@ -1,0 +1,20 @@
+diff values.yaml values.yaml
+--- values.yaml
++++ values.yaml
+@@ -42,7 +42,7 @@
+     # cpu: 1000m
+     # memory: 1Gi
+     requests:
+-      cpu: 100m
++      cpu: 150m
+       memory: 64Mi
+   priorityClassName: ""
+   annotations:
+@@ -233,7 +233,6 @@
+       #    hosts:
+       #      - flux-webhook.example.com
+
+-
+   nodeSelector: {}
+   affinity: {}
+   tolerations: []
