@@ -3,6 +3,8 @@ package cmd
 import (
 	"errors"
 	"fmt"
+	"io"
+	"os"
 	"path/filepath"
 
 	"github.com/spf13/cobra"
@@ -24,10 +26,14 @@ func checkErr(err error) error {
 }
 
 func New() *cobra.Command {
-	var opts config.Options
+	var (
+		opts  config.Options
+		quiet bool
+		out   io.Writer
+	)
 
 	rootCmd := &cobra.Command{
-		Use:          "helmquilt <apply|check>",
+		Use:          "helmquilt <apply|check|diff>",
 		Short:        "helmquilt is a tool for managing helm package patches",
 		Args:         cobra.MatchAll(cobra.ExactArgs(1), cobra.OnlyValidArgs),
 		ValidArgs:    []cobra.Completion{"apply", "check", "diff"},
@@ -39,13 +45,18 @@ func New() *cobra.Command {
 				return checkErr(err)
 			}
 			opts.WorkDir = filepath.Dir(opts.ConfigFile)
-			ctx := logger.NewContext(cmd.Context(), "helmquilt")
+			out = os.Stderr
+			if quiet {
+				out = io.Discard
+			}
+			ctx := logger.NewContext(cmd.Context(), "helmquilt", out)
 			return checkErr(helmquilt.Run(ctx, args[0], opts))
 		},
 	}
 	rootCmd.Flags().BoolVarP(&opts.Force, "force", "f", false, "force run (ignore lock file)")
 	rootCmd.Flags().BoolVarP(&opts.Repack, "repack", "r", false, "Repack the chart as a tarball")
 	rootCmd.Flags().StringVarP(&opts.ConfigFile, "config", "c", "./helmquilt.yaml", "path to the config file")
+	rootCmd.Flags().BoolVarP(&quiet, "quiet", "q", false, "Silence the logs")
 
 	return rootCmd
 }

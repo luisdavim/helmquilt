@@ -40,6 +40,9 @@ func diff(ctx context.Context, cfg config.Config, opts config.Options) error {
 			return err
 		}
 
+		if len(diff) == 0 {
+			logger.Println("No changes")
+		}
 		_, _ = os.Stdout.Write(diff)
 	}
 

@@ -57,10 +57,10 @@ func DiffDirs(oldDir, newDir string) ([]byte, error) {
 			newB = []byte("")
 		}
 
-		d := diff.Diff(filepath.Join("a", relName), oldB, filepath.Join("b", relName), newB)
+		d := diff.Diff(relName, oldB, relName, newB)
 		if len(d) != 0 {
-			_, _ = allDiffs.Write(d)
 			_, _ = allDiffs.WriteString("\n")
+			_, _ = allDiffs.Write(d)
 		}
 		delete(newFiles, newName)
 	}
@@ -75,13 +75,16 @@ func DiffDirs(oldDir, newDir string) ([]byte, error) {
 			return nil, err
 		}
 
-		d := diff.Diff(filepath.Join("a", relName), []byte(""), filepath.Join("b", relName), newB)
+		d := diff.Diff(relName, []byte(""), relName, newB)
 		if len(d) != 0 {
-			_, _ = allDiffs.Write(d)
 			_, _ = allDiffs.WriteString("\n")
+			_, _ = allDiffs.Write(d)
 		}
 	}
 
+	if allDiffs.Len() > 0 {
+		_, _ = allDiffs.WriteString("\n")
+	}
 	return allDiffs.Bytes(), nil
 }
 

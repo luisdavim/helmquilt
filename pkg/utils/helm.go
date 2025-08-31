@@ -56,7 +56,7 @@ func DownloadChart(repo, chart, version, dst string) (string, error) {
 }
 
 func logDebug(format string, v ...any) {
-	fmt.Printf(format, v...)
+	fmt.Fprintf(os.Stderr, format, v...)
 }
 
 func PullChart(reg, chart, version, dst string) (string, error) {

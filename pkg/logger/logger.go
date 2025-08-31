@@ -3,6 +3,7 @@ package logger
 import (
 	"context"
 	"fmt"
+	"io"
 	"log"
 	"os"
 )
@@ -13,12 +14,12 @@ const (
 	loggerKey ctxKey = "loggerKey"
 )
 
-func New(name string) *log.Logger {
-	return log.New(os.Stdout, fmt.Sprintf("[%s] ", name), log.LstdFlags)
+func New(name string, out io.Writer) *log.Logger {
+	return log.New(out, fmt.Sprintf("[%s] ", name), log.LstdFlags)
 }
 
-func NewContext(ctx context.Context, name string) context.Context {
-	return IntoContext(ctx, New(name))
+func NewContext(ctx context.Context, name string, out io.Writer) context.Context {
+	return IntoContext(ctx, New(name, out))
 }
 
 func IntoContext(ctx context.Context, logger *log.Logger) context.Context {
@@ -30,5 +31,5 @@ func FromContext(ctx context.Context) *log.Logger {
 		return logger
 	}
 
-	return New("helmquilt")
+	return New("helmquilt", os.Stderr)
 }
