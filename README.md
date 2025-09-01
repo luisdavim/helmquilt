@@ -29,7 +29,9 @@ Flags:
 
 and check the [example](./example/) folder for a sample configuration file.
 
-### Example workflow
+### Example workflows
+
+#### Start managing some charts and patches
 
 1. Create a `helmquilt.yaml` with the chart(s) you want to fetch
 2. Run `helmquilt apply` to fetch the chart(s)
@@ -43,3 +45,17 @@ If latter you want to add more changes, just make the changes you need, run `hel
 If you keep your patched chart(s) in git, you can also use `git diff` instead of `helmquilt diff` to create the patche files.
 
 In the `example` folder the `example/patches/coredns1.patch` was created using `git diff` and `example/patches/flux.patch` was created using `helmquilt diff`.
+
+#### Update existing modified charts to a new upstream version
+
+If you already have some modified charts that you'd like to upgrade without loosing your chagnes, you can try:
+
+1. Create a `helmquilt.yaml` file matching the charts and versions you already have.
+2. Run `helmquilt diff`, this shold give you the diffs with your changes.
+3. Save the diffs into patch files
+4. Update the `helmquilt.yaml` config file to include the patches
+5. Run `helmquilt apply` to update the lock file with the new checksums
+6. Update the `helmquilt.yaml` config file with the versions you want to update to.
+7. Run `helmquilt apply` to update the lock file with the new checksums
+
+As long as your patches still apply to the new versions, you shold get the new versions of the charts with your changes on top.
