@@ -22,6 +22,10 @@ func checkErr(err error) error {
 		return nil
 	}
 
+	if errors.Is(err, config.ErrMissingConfig) {
+		return err
+	}
+
 	return fmt.Errorf("%w%w", ErrHelmquilt, err)
 }
 
@@ -53,9 +57,8 @@ func New() *cobra.Command {
 			return checkErr(helmquilt.Run(ctx, args[0], opts))
 		},
 	}
-	rootCmd.Flags().BoolVarP(&opts.Force, "force", "f", false, "force run (ignore lock file)")
-	rootCmd.Flags().BoolVarP(&opts.Repack, "repack", "r", false, "Repack the chart as a tarball")
-	rootCmd.Flags().StringVarP(&opts.ConfigFile, "config", "c", "./helmquilt.yaml", "path to the config file")
+
+	opts.AddFlags(rootCmd)
 	rootCmd.Flags().BoolVarP(&quiet, "quiet", "q", false, "Silence the logs")
 
 	return rootCmd
