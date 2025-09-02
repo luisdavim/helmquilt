@@ -48,7 +48,9 @@ func New() *cobra.Command {
 			if err != nil {
 				return checkErr(err)
 			}
-			opts.WorkDir = filepath.Dir(opts.ConfigFile)
+			if opts.WorkDir == "" {
+				opts.WorkDir = filepath.Dir(opts.ConfigFile)
+			}
 			out = os.Stderr
 			if quiet {
 				out = io.Discard

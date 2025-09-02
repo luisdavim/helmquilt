@@ -61,7 +61,12 @@ func Run(ctx context.Context, action string, opts config.Options) error {
 		return diff(ctx, cfg, opts)
 	}
 
-	needUpdate, err := filterCurrent(ctx, cfg, opts)
+	if action == "check" {
+		opts.DryRun = true
+	}
+
+	// skip charts that are up-to-date
+	needUpdate, changed, err := filterCurrent(ctx, cfg, opts)
 	if err != nil {
 		return err
 	}
@@ -72,6 +77,9 @@ func Run(ctx context.Context, action string, opts config.Options) error {
 	}
 
 	if action == "check" {
+		if changed {
+			return fmt.Errorf("some charts need to be cleaned")
+		}
 		return fmt.Errorf("not all charts are up to date")
 	}
 

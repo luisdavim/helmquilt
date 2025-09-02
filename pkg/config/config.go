@@ -18,12 +18,14 @@ type Options struct {
 	Repack     bool
 	ConfigFile string
 	WorkDir    string
+	DryRun     bool
 }
 
 func (opts *Options) AddFlags(cmd *cobra.Command) {
 	cmd.Flags().BoolVarP(&opts.Force, "force", "f", false, "force run (ignore lock file)")
 	cmd.Flags().BoolVarP(&opts.Repack, "repack", "r", false, "Repack the chart as a tarball")
 	cmd.Flags().StringVarP(&opts.ConfigFile, "config", "c", DefaultConfigFile, "path to the config file")
+	cmd.Flags().StringVarP(&opts.WorkDir, "workdir", "w", "", "Override workdir, instead of config file location")
 }
 
 type Config struct {
