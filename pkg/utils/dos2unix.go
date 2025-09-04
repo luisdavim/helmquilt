@@ -46,10 +46,10 @@ func Dos2Unix(filename string) error {
 			}
 			_, _ = writer.Write(buf)
 		}
-		_, _ = writer.WriteString("\n")
 		if err == io.EOF {
 			break
 		}
+		_, _ = writer.WriteString("\n")
 	}
 	_ = writer.Flush()
 
