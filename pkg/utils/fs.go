@@ -2,6 +2,7 @@ package utils
 
 import (
 	"fmt"
+	"io/fs"
 	"os"
 	"path/filepath"
 )
@@ -71,4 +72,30 @@ func CopyDir(src string, dst string) error {
 		}
 	}
 	return nil
+}
+
+func FindFile(root, pattern string) ([]string, error) {
+	var found []string
+
+	err := filepath.WalkDir(root, func(path string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		if d.IsDir() {
+			return nil
+		}
+
+		match, err := filepath.Match(pattern, d.Name())
+		if err != nil {
+			return err
+		}
+
+		if match {
+			found = append(found, path)
+		}
+
+		return nil
+	})
+
+	return found, err
 }

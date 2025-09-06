@@ -1,7 +1,7 @@
 charts:
 - name: flux2
   patches:
-  - flux.patch
+  - flux1.patch
   path: charts
   source:
     chartName: flux2

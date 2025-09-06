@@ -11,57 +11,19 @@ import (
 	"github.com/luisdavim/helmquilt/pkg/utils"
 )
 
-func diff(ctx context.Context, cfg config.Config, opts config.Options) error {
+func Run(ctx context.Context, action Action, opts config.Options) error {
 	logger := logger.FromContext(ctx)
-	tempDir, _ := os.MkdirTemp("", "helmquilt")
-	defer func() { _ = os.RemoveAll(tempDir) }()
 
-	tmpOpts := opts
-	tmpOpts.WorkDir = tempDir
-	tmpOpts.Force = true
-
-	if err := utils.CopyDir(filepath.Join(opts.WorkDir, config.PatchesPath), filepath.Join(tempDir, config.PatchesPath)); err != nil {
-		return err
+	if action == DiffAction {
+		return Diff(ctx, config.DiffOptions{Options: opts})
 	}
-
-	logger.Println("Preparing current state for comparison!")
-	if err := Run(ctx, "apply", tmpOpts); err != nil {
-		return err
-	}
-	logger.Println("Current state ready!")
-
-	for _, chart := range cfg.Charts {
-		oldChart := filepath.Join(tempDir, chart.Path, chart.Source.ChartName)
-		newChart := filepath.Join(opts.WorkDir, chart.Path, chart.Source.ChartName)
-
-		logger.Printf("Comparing %s with %s", oldChart, newChart)
-		diff, err := utils.DiffDirs(oldChart, newChart)
-		if err != nil {
-			return err
-		}
-
-		if len(diff) == 0 {
-			logger.Println("No changes")
-		}
-		_, _ = os.Stdout.Write(diff)
-	}
-
-	return nil
-}
-
-func Run(ctx context.Context, action string, opts config.Options) error {
-	logger := logger.FromContext(ctx)
 
 	cfg, err := config.Read(opts.ConfigFile)
 	if err != nil {
 		return err
 	}
 
-	if action == "diff" {
-		return diff(ctx, cfg, opts)
-	}
-
-	if action == "check" {
+	if action == CheckAction {
 		opts.DryRun = true
 	}
 
@@ -76,7 +38,7 @@ func Run(ctx context.Context, action string, opts config.Options) error {
 		return nil
 	}
 
-	if action == "check" {
+	if action == CheckAction {
 		if changed {
 			return fmt.Errorf("some charts need to be cleaned")
 		}

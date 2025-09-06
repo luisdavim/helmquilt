@@ -5,12 +5,10 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"path/filepath"
 
 	"github.com/spf13/cobra"
 
 	"github.com/luisdavim/helmquilt/pkg/config"
-	"github.com/luisdavim/helmquilt/pkg/helmquilt"
 	"github.com/luisdavim/helmquilt/pkg/logger"
 )
 
@@ -31,7 +29,6 @@ func checkErr(err error) error {
 
 func New() *cobra.Command {
 	var (
-		opts  config.Options
 		quiet bool
 		out   io.Writer
 	)
@@ -42,26 +39,18 @@ func New() *cobra.Command {
 		Args:         cobra.MatchAll(cobra.ExactArgs(1), cobra.OnlyValidArgs),
 		ValidArgs:    []cobra.Completion{"apply", "check", "diff"},
 		SilenceUsage: true,
-		RunE: func(cmd *cobra.Command, args []string) error {
-			var err error
-			opts.ConfigFile, err = filepath.Abs(opts.ConfigFile)
-			if err != nil {
-				return checkErr(err)
-			}
-			if opts.WorkDir == "" {
-				opts.WorkDir = filepath.Dir(opts.ConfigFile)
-			}
+		PersistentPreRun: func(cmd *cobra.Command, args []string) {
 			out = os.Stderr
 			if quiet {
 				out = io.Discard
 			}
 			ctx := logger.NewContext(cmd.Context(), "helmquilt", out)
-			return checkErr(helmquilt.Run(ctx, args[0], opts))
+			cmd.SetContext(ctx)
 		},
 	}
 
-	opts.AddFlags(rootCmd)
-	rootCmd.Flags().BoolVarP(&quiet, "quiet", "q", false, "Silence the logs")
+	rootCmd.PersistentFlags().BoolVarP(&quiet, "quiet", "q", false, "Silence the logs")
+	rootCmd.AddCommand(applyCmd(), checkCmd(), diffCmd())
 
 	return rootCmd
 }

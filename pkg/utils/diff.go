@@ -92,6 +92,9 @@ func readDir(root string) (map[string]bool, error) {
 	files := make(map[string]bool)
 
 	err := filepath.WalkDir(root, func(path string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
 		if d.IsDir() {
 			return nil
 		}
