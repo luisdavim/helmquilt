@@ -36,8 +36,6 @@ func New() *cobra.Command {
 	rootCmd := &cobra.Command{
 		Use:          "helmquilt <apply|check|diff>",
 		Short:        "helmquilt is a tool for managing helm package patches",
-		Args:         cobra.MatchAll(cobra.ExactArgs(1), cobra.OnlyValidArgs),
-		ValidArgs:    []cobra.Completion{"apply", "check", "diff"},
 		SilenceUsage: true,
 		PersistentPreRun: func(cmd *cobra.Command, args []string) {
 			out = os.Stderr

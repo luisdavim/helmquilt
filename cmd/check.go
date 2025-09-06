@@ -14,7 +14,7 @@ func checkCmd() *cobra.Command {
 
 	cmd := &cobra.Command{
 		Use:          "check",
-		Short:        "read the helmquilt config and lock files and check if everything is up-to-date",
+		Short:        "Read the helmquilt config and lock files and check if everything is up-to-date",
 		Args:         cobra.ExactArgs(0),
 		SilenceUsage: true,
 		RunE: func(cmd *cobra.Command, args []string) error {

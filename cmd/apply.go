@@ -14,7 +14,7 @@ func applyCmd() *cobra.Command {
 
 	cmd := &cobra.Command{
 		Use:          "apply",
-		Short:        "apply the helmquilt config, fetch charts and apply patches",
+		Short:        "Apply the helmquilt config, fetch charts and apply patches",
 		Args:         cobra.ExactArgs(0),
 		SilenceUsage: true,
 		RunE: func(cmd *cobra.Command, args []string) error {

@@ -28,6 +28,11 @@ func TestBunmpFilename(t *testing.T) {
 			in:       "test99.patch",
 			expected: "test100.patch",
 		},
+		{
+			name:     "dash",
+			in:       "test2-99.patch",
+			expected: "test2-100.patch",
+		},
 	}
 
 	for _, tc := range tests {

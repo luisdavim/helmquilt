@@ -14,7 +14,7 @@ func diffCmd() *cobra.Command {
 
 	cmd := &cobra.Command{
 		Use:          "diff",
-		Short:        "check if changes were made and return the differences",
+		Short:        "Check if changes were made and return the differences",
 		Args:         cobra.ExactArgs(0),
 		SilenceUsage: true,
 		RunE: func(cmd *cobra.Command, args []string) error {
