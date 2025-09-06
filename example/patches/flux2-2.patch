@@ -1,0 +1,14 @@
+
+diff values.yaml values.yaml
+--- values.yaml
++++ values.yaml
+@@ -43,7 +43,7 @@
+     # memory: 1Gi
+     requests:
+       cpu: 150m
+-      memory: 64Mi
++      memory: 128Mi
+   priorityClassName: ""
+   annotations:
+     prometheus.io/port: "8080"
+

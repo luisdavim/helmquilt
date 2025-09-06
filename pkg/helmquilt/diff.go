@@ -72,10 +72,12 @@ func Diff(ctx context.Context, opts config.DiffOptions) error {
 	}
 
 	if updated {
-		logger.Panicln("Updating config file with new patches")
+		logger.Println("Updating config file with new patches")
 		if err := config.Save(cfg, opts.Options); err != nil {
 			return err
 		}
+		logger.Println("Updating lockfile")
+		return config.UpdateLockfile(cfg, opts.Options)
 	}
 
 	return nil
