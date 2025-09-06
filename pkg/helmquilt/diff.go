@@ -95,5 +95,5 @@ func getLatestPatch(name, workDir string) (string, error) {
 		file = files[l-1]
 	}
 
-	return utils.BumpFilename(file), nil
+	return utils.BumpFilename(file, "", 0), nil
 }
