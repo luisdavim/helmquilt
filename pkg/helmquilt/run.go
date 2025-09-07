@@ -71,7 +71,7 @@ func Run(ctx context.Context, action Action, opts config.ApplyOptions) error {
 		if err := applyFileMigrations(ctx, chart, opts.WorkDir, chartDestDir); err != nil {
 			return err
 		}
-		if err := utils.UpdateChartMetadata(chart.Version, chartDestDir); err != nil {
+		if err := utils.UpdateChartMetadata(chart.Version, chart.Name, chartDestDir); err != nil {
 			return err
 		}
 		if err := utils.RemoveEmptyFolders(chartDestDir); err != nil {

@@ -85,6 +85,8 @@ func FindFile(root, pattern string) ([]string, error) {
 			return nil
 		}
 
+		// we match just the name and not the full path because filepath.Match must match the full name
+		// and double * patterns are not supported, making it hard to match the full path
 		match, err := filepath.Match(pattern, d.Name())
 		if err != nil {
 			return err

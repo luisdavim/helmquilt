@@ -112,8 +112,8 @@ func GetChartVersion(chartDir string) (string, error) {
 	return cm.Version, nil
 }
 
-func UpdateChartMetadata(version string, chartDir string) error {
-	if version == "" {
+func UpdateChartMetadata(version, name string, chartDir string) error {
+	if version == "" && name == "" {
 		return nil
 	}
 
@@ -127,7 +127,17 @@ func UpdateChartMetadata(version string, chartDir string) error {
 		return err
 	}
 
-	cm.Version = version
+	if (version == "" || cm.Version == version) && (name == "" || cm.Name == name) {
+		return nil
+	}
+
+	if version != "" {
+		cm.Version = version
+	}
+
+	if name != "" {
+		cm.Name = name
+	}
 
 	chartMeta, err = yaml.Marshal(cm)
 	if err != nil {

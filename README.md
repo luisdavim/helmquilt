@@ -1,6 +1,6 @@
 # Helmquilt
 
-Helmquilt is a tool for managing helm patches. It allows you to pull helm charts from oter locations, including other git repositories and apply patches to them.
+Helmquilt is a tool for managing helm patches. It allows you to pull helm charts from other locations, including other git repositories and apply patches to them.
 Instead of forking the whole chart you can now just maintain a set of patches and repackage external charts to your needs.
 
 Like with [quilt](https://www.man7.org/linux/man-pages/man1/quilt.1.html), the key philosophical concept is that your primary working material is patches.
