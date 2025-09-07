@@ -37,6 +37,7 @@ func DiffDirs(oldDir, newDir string) ([]byte, error) {
 	}
 
 	for oldName := range oldFiles {
+		// TODO: skip diffing binary files?
 		oldB, err := os.ReadFile(oldName)
 		if err != nil {
 			return nil, err

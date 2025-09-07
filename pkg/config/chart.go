@@ -15,7 +15,9 @@ type Chart struct {
 	// Source holds information about where to pull the chart from and what version to pull
 	Source Source `json:"source,omitempty"`
 	// Patches is the set of patch files to apply to this chart
-	Patches        []string `json:"patches,omitempty"`
+	Patches []string `json:"patches,omitempty"`
+	// Repack indicates wether or not the chart should be stored as a tarball
+	Repack         bool `json:"repack,omitempty"`
 	FileOperations `json:",inline"`
 }
 

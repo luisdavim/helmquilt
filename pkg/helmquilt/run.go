@@ -59,7 +59,7 @@ func Run(ctx context.Context, action Action, opts config.ApplyOptions) error {
 		chartDestDir := filepath.Join(destDir, chart.Source.ChartName)
 		if _, err := os.Stat(chartDestDir); err == nil {
 			if err := os.RemoveAll(chartDestDir); err != nil {
-				return err
+				return fmt.Errorf("failed to clear %s for the new chart: %w", chartDestDir, err)
 			}
 		}
 
@@ -78,7 +78,7 @@ func Run(ctx context.Context, action Action, opts config.ApplyOptions) error {
 			return err
 		}
 
-		if opts.Repack {
+		if opts.Repack || chart.Repack {
 			if chart.Version == "" {
 				// the package file name needs to include the chart version
 				chart.Version, err = utils.GetChartVersion(chartDestDir)
@@ -98,7 +98,7 @@ func Run(ctx context.Context, action Action, opts config.ApplyOptions) error {
 				return fmt.Errorf("failed to repack %q: %w", chart.GetName(), err)
 			}
 			if err := os.RemoveAll(chartDestDir); err != nil {
-				return err
+				return fmt.Errorf("failed to remove unpacked chart: %w", err)
 			}
 			logger.Printf("Chart saved to %q; checksum: %q\n", dst, sum)
 		}
