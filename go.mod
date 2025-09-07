@@ -7,7 +7,7 @@ require (
 	github.com/go-git/go-git/v5 v5.16.2
 	github.com/hashicorp/go-retryablehttp v0.7.8
 	github.com/rogpeppe/go-internal v1.14.1
-	github.com/spf13/cobra v1.9.1
+	github.com/spf13/cobra v1.10.1
 	golang.org/x/mod v0.27.0
 	helm.sh/helm/v3 v3.18.6
 	helm.sh/helm/v4 v4.0.0-20250724191708-a42b76421bbb
@@ -103,7 +103,7 @@ require (
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/skeema/knownhosts v1.3.1 // indirect
 	github.com/spf13/cast v1.7.0 // indirect
-	github.com/spf13/pflag v1.0.7 // indirect
+	github.com/spf13/pflag v1.0.9 // indirect
 	github.com/x448/float16 v0.8.4 // indirect
 	github.com/xanzy/ssh-agent v0.3.3 // indirect
 	github.com/xlab/treeprint v1.2.0 // indirect
