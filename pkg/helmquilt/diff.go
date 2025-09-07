@@ -23,7 +23,7 @@ func Diff(ctx context.Context, opts config.DiffOptions) error {
 	tempDir, _ := os.MkdirTemp("", "helmquilt")
 	defer func() { _ = os.RemoveAll(tempDir) }()
 
-	tmpOpts := opts.Options
+	tmpOpts := config.ApplyOptions{Options: opts.Options}
 	tmpOpts.WorkDir = tempDir
 	tmpOpts.Force = true
 
@@ -77,7 +77,7 @@ func Diff(ctx context.Context, opts config.DiffOptions) error {
 			return err
 		}
 		logger.Println("Updating lockfile")
-		return config.UpdateLockfile(cfg, opts.Options)
+		return config.UpdateLockfile(cfg, config.ApplyOptions{Options: opts.Options})
 	}
 
 	return nil

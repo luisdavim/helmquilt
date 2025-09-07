@@ -51,7 +51,7 @@ func clearRemoved(ctx context.Context, cfg config.Config, lockfile *config.LockF
 }
 
 // filterCurrent returns the subset of charts in the configuration that need to be updated
-func filterCurrent(ctx context.Context, cfg config.Config, opts config.Options) (config.Config, bool, error) {
+func filterCurrent(ctx context.Context, cfg config.Config, opts config.ApplyOptions) (config.Config, bool, error) {
 	logger := logger.FromContext(ctx)
 
 	var changed bool
@@ -67,7 +67,7 @@ func filterCurrent(ctx context.Context, cfg config.Config, opts config.Options) 
 	}
 
 	// delete charts referenced in the lockfile that are not in the new config
-	changed, err = clearRemoved(ctx, cfg, &lockfile, opts)
+	changed, err = clearRemoved(ctx, cfg, &lockfile, opts.Options)
 	if err != nil {
 		return cfg, changed, err
 	}

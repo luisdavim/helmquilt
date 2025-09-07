@@ -32,6 +32,9 @@ func Read(configFile string) (Config, error) {
 }
 
 func Save(cfg Config, opts Options) error {
+	if opts.DryRun {
+		return nil
+	}
 	out, err := yaml.Marshal(cfg)
 	if err != nil {
 		return err

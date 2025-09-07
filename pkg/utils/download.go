@@ -9,7 +9,43 @@ import (
 	"github.com/hashicorp/go-retryablehttp"
 )
 
-func DownloadFile(filepath string, url string) error {
+type ErrHTTP struct {
+	Code   int
+	Status string
+}
+
+func (e *ErrHTTP) Error() string {
+	return fmt.Sprintf("bad status: %s", e.Status)
+}
+
+func CheckResponse(resp *http.Response) error {
+	if resp.StatusCode != http.StatusOK {
+		return &ErrHTTP{
+			Status: resp.Status,
+			Code:   resp.StatusCode,
+		}
+	}
+	return nil
+}
+
+func HTTPGet(url string) ([]byte, error) {
+	resp, err := retryablehttp.Get(url)
+	if err != nil {
+		return nil, err
+	}
+	defer func() { _ = resp.Body.Close() }()
+
+	// Check server response
+	if err := CheckResponse(resp); err != nil {
+		return nil, err
+	}
+
+	data, err := io.ReadAll(resp.Body)
+
+	return data, err
+}
+
+func DownloadFile(filepath, url string) error {
 	// Create the file
 	out, err := os.Create(filepath)
 	if err != nil {

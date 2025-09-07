@@ -11,11 +11,11 @@ import (
 	"github.com/luisdavim/helmquilt/pkg/utils"
 )
 
-func Run(ctx context.Context, action Action, opts config.Options) error {
+func Run(ctx context.Context, action Action, opts config.ApplyOptions) error {
 	logger := logger.FromContext(ctx)
 
 	if action == DiffAction {
-		return Diff(ctx, config.DiffOptions{Options: opts})
+		return Diff(ctx, config.DiffOptions{Options: opts.Options})
 	}
 
 	cfg, err := config.Read(opts.ConfigFile)

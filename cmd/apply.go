@@ -10,7 +10,7 @@ import (
 )
 
 func applyCmd() *cobra.Command {
-	var opts config.Options
+	var opts config.ApplyOptions
 
 	cmd := &cobra.Command{
 		Use:          "apply",

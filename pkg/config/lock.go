@@ -47,7 +47,7 @@ func ReadLockFile(workDir string) (LockFile, error) {
 	return locks, nil
 }
 
-func UpdateLockfile(cfg Config, opts Options) error {
+func UpdateLockfile(cfg Config, opts ApplyOptions) error {
 	locks := LockFile{Charts: []ChartLock{}}
 
 	for _, chart := range cfg.Charts {
@@ -115,10 +115,14 @@ func UpdateLockfile(cfg Config, opts Options) error {
 		return err
 	}
 
+	if opts.DryRun {
+		return nil
+	}
+
 	if err := os.WriteFile(filepath.Join(opts.WorkDir, lockFilename), out, 0o644); err != nil {
 		return fmt.Errorf("failed to update config file: %w", err)
 	}
 
 	// TODO: is this needed? in the current implementaion this will drop any file comments
-	return Save(cfg, opts)
+	return Save(cfg, opts.Options)
 }

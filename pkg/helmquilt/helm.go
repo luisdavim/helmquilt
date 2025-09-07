@@ -16,7 +16,7 @@ import (
 	"github.com/luisdavim/helmquilt/pkg/utils"
 )
 
-// fetchChart gets the helm chart from the given source, storing them in the given path
+// fetchChart gets the helm chart from the given source, storing it in the given path
 func fetchChart(ctx context.Context, source config.Source, chartDownloadDir string) (string, error) {
 	logger := logger.FromContext(ctx)
 	logger.Printf("Fetching chart %s from %s\n", filepath.Join(source.ChartPath, source.ChartName), source.URL)
@@ -29,7 +29,7 @@ func fetchChart(ctx context.Context, source config.Source, chartDownloadDir stri
 	}
 
 	// the source is a git repository
-	if strings.HasPrefix(source.URL, "git") || strings.HasSuffix(source.URL, ".git") {
+	if strings.HasPrefix(source.URL, "git@") || strings.HasSuffix(source.URL, ".git") {
 		ref := plumbing.ReferenceName(source.Version)
 		if ref != "" && ref.Validate() != nil {
 			if semver.IsValid(source.Version) {

@@ -26,7 +26,7 @@ func checkCmd() *cobra.Command {
 			if opts.WorkDir == "" {
 				opts.WorkDir = filepath.Dir(opts.ConfigFile)
 			}
-			return checkErr(helmquilt.Run(cmd.Context(), helmquilt.CheckAction, opts))
+			return checkErr(helmquilt.Run(cmd.Context(), helmquilt.CheckAction, config.ApplyOptions{Options: opts}))
 		},
 	}
 

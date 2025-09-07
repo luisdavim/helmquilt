@@ -1,13 +1,12 @@
 package utils
 
 import (
+	"errors"
 	"fmt"
-	"io"
 	"net/http"
 	"os"
 	"path/filepath"
 
-	"github.com/hashicorp/go-retryablehttp"
 	"helm.sh/helm/v3/pkg/action"
 	"helm.sh/helm/v3/pkg/cli"
 	"helm.sh/helm/v3/pkg/registry"
@@ -16,20 +15,25 @@ import (
 	"sigs.k8s.io/yaml"
 )
 
-func DownloadChart(repo, chart, version, dst string) (string, error) {
-	resp, err := retryablehttp.Get(repo + "/index.yaml")
-	if err != nil {
-		return "", err
-	}
-	defer func() { _ = resp.Body.Close() }()
+const (
+	chartMetaFile = "Chart.yaml"
+)
 
-	// Check server response
-	if resp.StatusCode != http.StatusOK {
-		return "", fmt.Errorf("failed to download charts index: bad status: %s", resp.Status)
+func DownloadChart(repo, chart, version, dst string) (string, error) {
+	data, err := HTTPGet(repo + "/index.yaml")
+	if err != nil {
+		var httpErr *ErrHTTP
+		if errors.As(err, &httpErr) {
+			if httpErr.Code == http.StatusNotFound {
+				data, err = HTTPGet(repo + "/index.json")
+			}
+		}
+		if err != nil {
+			return "", fmt.Errorf("failed to download charts index: %w", err)
+		}
 	}
 
 	var idx helmrepo.IndexFile
-	data, _ := io.ReadAll(resp.Body)
 	if err := yaml.Unmarshal(data, &idx); err != nil {
 		return "", fmt.Errorf("faield to read index: %w", err)
 	}
@@ -95,7 +99,7 @@ func PullChart(reg, chart, version, dst string) (string, error) {
 }
 
 func GetChartVersion(chartDir string) (string, error) {
-	chartMeta, err := os.ReadFile(filepath.Join(chartDir, "Chart.yaml"))
+	chartMeta, err := os.ReadFile(filepath.Join(chartDir, chartMetaFile))
 	if err != nil {
 		return "", err
 	}
@@ -113,7 +117,7 @@ func UpdateChartMetadata(version string, chartDir string) error {
 		return nil
 	}
 
-	chartMeta, err := os.ReadFile(filepath.Join(chartDir, "Chart.yaml"))
+	chartMeta, err := os.ReadFile(filepath.Join(chartDir, chartMetaFile))
 	if err != nil {
 		return err
 	}
@@ -130,7 +134,7 @@ func UpdateChartMetadata(version string, chartDir string) error {
 		return err
 	}
 
-	if err := os.WriteFile(filepath.Join(chartDir, "Chart.yaml"), chartMeta, os.ModePerm); err != nil {
+	if err := os.WriteFile(filepath.Join(chartDir, chartMetaFile), chartMeta, os.ModePerm); err != nil {
 		return err
 	}
 
