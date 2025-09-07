@@ -13,8 +13,11 @@ func diffCmd() *cobra.Command {
 	var opts config.DiffOptions
 
 	cmd := &cobra.Command{
-		Use:          "diff",
-		Short:        "Check if changes were made and return the differences",
+		Use:   "diff",
+		Short: "Check if changes were made and return the differences",
+		Long: `Check if changes were made and return the differences.
+It will pull the charts into a temporary location using the config and compare that with the current state of the WorkDir.
+By default it will only print the diffs but it can also store them in files and autommatically add them to the config.`,
 		Args:         cobra.ExactArgs(0),
 		SilenceUsage: true,
 		RunE: func(cmd *cobra.Command, args []string) error {

@@ -6,7 +6,7 @@ import (
 )
 
 type Chart struct {
-	// Name of the Chart
+	// Name of the Chart, if different from the source chart name it will be used to override the chart name
 	Name string `json:"name,omitempty"`
 	// Version to set on the chart after applying changes, leave empty to keep the original version
 	Version string `json:"version,omitempty"`
@@ -61,4 +61,18 @@ func (c *Chart) GetFullName(workDir string) string {
 
 func (c *Chart) GetTarName() string {
 	return fmt.Sprintf("%s-%s.tgz", c.GetName(), c.Version)
+}
+
+func (c *Chart) SetDefaults() error {
+	if c.Name == "" && c.Source.ChartName == "" {
+		return fmt.Errorf("a chart name is requied")
+	}
+	if c.Name == "" {
+		c.Name = c.Source.ChartName
+	}
+	if c.Source.ChartName == "" {
+		c.Source.ChartName = c.Name
+	}
+
+	return nil
 }

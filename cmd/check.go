@@ -13,8 +13,10 @@ func checkCmd() *cobra.Command {
 	var opts config.Options
 
 	cmd := &cobra.Command{
-		Use:          "check",
-		Short:        "Read the helmquilt config and lock files and check if everything is up-to-date",
+		Use:   "check",
+		Short: "Read the helmquilt config and check if everything is up-to-date with the lock file",
+		Long: `Read the helmquilt config and check if everything is up-to-date with the lock file.
+It will exit with a non zero code if the charts do not match the lock file.`,
 		Args:         cobra.ExactArgs(0),
 		SilenceUsage: true,
 		RunE: func(cmd *cobra.Command, args []string) error {

@@ -50,6 +50,9 @@ func Run(ctx context.Context, action Action, opts config.ApplyOptions) error {
 	defer func() { _ = os.RemoveAll(tempDir) }()
 
 	for _, chart := range needUpdate.Charts {
+		if err := chart.SetDefaults(); err != nil {
+			return err
+		}
 		destDir := filepath.Join(opts.WorkDir, chart.Path)
 		chartDownloadPath, err := fetchChart(ctx, chart.Source, tempDir)
 		if err != nil {

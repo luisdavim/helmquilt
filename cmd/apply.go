@@ -13,8 +13,10 @@ func applyCmd() *cobra.Command {
 	var opts config.ApplyOptions
 
 	cmd := &cobra.Command{
-		Use:          "apply",
-		Short:        "Apply the helmquilt config, fetch charts and apply patches",
+		Use:   "apply",
+		Short: "Apply the helmquilt config, fetch charts and apply patches",
+		Long: `Apply the helmquilt config, fetch charts and apply patches.
+In the end it will generate a lock file that is used on subsequent runs to determine what needs to be updated or not.`,
 		Args:         cobra.ExactArgs(0),
 		SilenceUsage: true,
 		RunE: func(cmd *cobra.Command, args []string) error {

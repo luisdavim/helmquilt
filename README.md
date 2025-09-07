@@ -37,6 +37,27 @@ Use "helmquilt [command] --help" for more information about a command.
 
 and check the [example](./example/) folder for a sample configuration file.
 
+### Config format
+
+You can see an example in the example folder but the tool uses a `YAML` config file with the following format:
+
+```yaml
+charts: # Contains a list of charts to pull and/or patch
+- name: string # Name of the Chart, if different from the source chart name it will be used to override the chart name
+    version: string # Version to set on the chart after applying changes, leave empty to keep the original version
+    path: string # directory where to store this chart (parent dir)
+    source: # information about where to pull the chart from
+      url: string # URL from where to get the chart from, this can be a git repo, OCI registry or a helm repo
+      chartName: string # name of the chart in the repo or registry
+      chartPath: string # sub-path where to find the chart in the repo or registry
+      version: string # Version to pull from the repo or registry
+    patches: # list pf patchh files to apply, paths must me relative to a folder name patches in the workDir
+    - string
+# ...
+```
+
+Note that paths are relative to the config file location, unless a `workDir` is specified. And patch files must be placed in a folder named `patches` in the workDir.
+
 ### Example workflows
 
 #### Start managing some charts and patches

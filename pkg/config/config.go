@@ -16,6 +16,16 @@ type Config struct {
 	Charts []Chart `json:"charts"`
 }
 
+func (c *Config) SetDefaults() error {
+	for _, chart := range c.Charts {
+		if err := chart.SetDefaults(); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
 func Read(configFile string) (Config, error) {
 	var charts Config
 
