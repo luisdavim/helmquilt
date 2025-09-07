@@ -77,9 +77,6 @@ func Run(ctx context.Context, action Action, opts config.ApplyOptions) error {
 		if err := utils.RemoveEmptyFolders(chartDestDir); err != nil {
 			return err
 		}
-		if err := utils.Dos2UnixDir(chartDestDir); err != nil {
-			return err
-		}
 
 		if opts.Repack {
 			if chart.Version == "" {

@@ -130,5 +130,9 @@ func applyFileMigrations(ctx context.Context, chart config.Chart, workDir, destD
 		return err
 	}
 
+	if err := utils.Dos2UnixDir(destDir); err != nil {
+		return err
+	}
+
 	return applyPatches(ctx, chart, workDir, destDir)
 }

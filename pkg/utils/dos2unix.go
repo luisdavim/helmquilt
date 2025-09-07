@@ -90,7 +90,7 @@ func hasDOSLineEndings(file io.ReadSeeker) (foundCR bool, rerr error) {
 		// Read a chunk of the file
 		n, err := reader.Read(buffer)
 		if err != nil {
-			if err.Error() == "EOF" {
+			if err == io.EOF {
 				break
 			}
 			return false, err
