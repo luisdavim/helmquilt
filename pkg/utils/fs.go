@@ -49,7 +49,7 @@ func MoveFile(destDir, source, dest string) error {
 	return RemoveEmptyFolders(destDir)
 }
 
-func CopyDir(src string, dst string) error {
+func CopyDir(src, dst string) error {
 	entries, err := os.ReadDir(src)
 	if err != nil {
 		return err
@@ -65,13 +65,34 @@ func CopyDir(src string, dst string) error {
 				return err
 			}
 		} else {
-			data, _ := os.ReadFile(srcPath)
-			if err := os.WriteFile(dstPath, data, 0o644); err != nil {
+			data, err := os.ReadFile(srcPath)
+			if err != nil {
+				return err
+			}
+
+			perm := fs.FileMode(0o644)
+			if i, err := entry.Info(); err == nil {
+				perm = i.Mode().Perm()
+			}
+
+			if err := os.WriteFile(dstPath, data, perm); err != nil {
 				return err
 			}
 		}
 	}
 	return nil
+}
+
+func CopyFile(src, dst string) error {
+	info, err := os.Stat(src)
+	if err != nil {
+		return err
+	}
+	data, err := os.ReadFile(src)
+	if err != nil {
+		return err
+	}
+	return os.WriteFile(dst, data, info.Mode().Perm())
 }
 
 func FindFile(root, pattern string) ([]string, error) {

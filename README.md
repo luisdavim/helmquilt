@@ -4,6 +4,11 @@ Helmquilt is a tool for managing helm patches. It allows you to pull helm charts
 Instead of forking the whole chart you can now just maintain a set of patches and repackage external charts to your needs.
 
 Like with [quilt](https://www.man7.org/linux/man-pages/man1/quilt.1.html), the key philosophical concept is that your primary working material is patches.
+Like `quilt`, `helmquilt`, allows you to apply a set of patches on top of a directory structure but `helmquilt` is aware of helm.
+It can pull helm charts from different sources, like helm repositories, OCI registries and git repositories. And it knows about the `Chart.yaml` file, allowing you to easily manage the chart version after your patches have been applied.
+On top of being able to apply patches, `helmquilt` can also perform some filesystem operations, like removing or renaming files or directories.
+Helmquilt can also help you create the patch files. Fetch the charts you need, make your changes and then run `helmquilt diff -w` to get the patch files generated and added to your configuration.
+All this is controlled through a easy to read `YAML` configuration file.
 
 Some times, as a platform engineer, you need to manage a set of costomisations on top of upstream helm charts, this can make keeping them up-to-date hard.
 Helmquilt allows you to fetch the upstream helm chart at a specified version and apply your changes with ease, as long as your patches still apply, you can update the chart by just pulling a newer version and applying your changes again.
@@ -51,7 +56,7 @@ charts: # Contains a list of charts to pull and/or patch
       chartName: string # name of the chart in the repo or registry
       chartPath: string # sub-path where to find the chart in the repo or registry
       version: string # Version to pull from the repo or registry
-    patches: # list pf patchh files to apply, paths must me relative to a folder name patches in the workDir
+    patches: # list of patch files to apply, paths must me relative to a folder name patches in the workDir
     - string
 # ...
 ```
