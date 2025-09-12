@@ -12,12 +12,12 @@ import (
 	"github.com/luisdavim/helmquilt/pkg/utils"
 )
 
-func Diff(ctx context.Context, opts config.DiffOptions) error {
+func Diff(ctx context.Context, opts config.DiffOptions) ([]string, error) {
 	logger := logger.FromContext(ctx)
 
 	cfg, err := config.Read(opts.ConfigFile)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	tempDir, _ := os.MkdirTemp("", "helmquilt")
@@ -28,16 +28,19 @@ func Diff(ctx context.Context, opts config.DiffOptions) error {
 	tmpOpts.Force = true
 
 	if err := utils.CopyDir(filepath.Join(opts.WorkDir, config.PatchesPath), filepath.Join(tempDir, config.PatchesPath)); err != nil {
-		return err
+		return nil, err
 	}
 
 	logger.Println("Preparing current state for comparison!")
 	if err := Run(ctx, ApplyAction, tmpOpts); err != nil {
-		return err
+		return nil, err
 	}
 	logger.Println("Current state ready!")
 
-	var updated bool
+	var (
+		updated bool
+		changed []string
+	)
 
 	for i, chart := range cfg.Charts {
 		oldChart := filepath.Join(tempDir, chart.Path, chart.Source.ChartName)
@@ -46,7 +49,7 @@ func Diff(ctx context.Context, opts config.DiffOptions) error {
 		logger.Printf("Comparing %s with %s", oldChart, newChart)
 		diff, err := utils.DiffDirs(oldChart, newChart)
 		if err != nil {
-			return err
+			return changed, err
 		}
 
 		if len(diff) == 0 {
@@ -54,14 +57,16 @@ func Diff(ctx context.Context, opts config.DiffOptions) error {
 			continue
 		}
 
+		changed = append(changed, chart.Name)
+
 		if opts.Write {
 			file, err := getLatestPatch(chart.Name, opts.WorkDir)
 			if err != nil {
-				return err
+				return changed, err
 			}
 			logger.Printf("Writing path file: %s", file)
 			if err := os.WriteFile(file, diff, 0o644); err != nil {
-				return fmt.Errorf("faild to write patch file: %w", err)
+				return changed, fmt.Errorf("faild to write patch file: %w", err)
 			}
 			chart.Patches = append(chart.Patches, filepath.Base(file))
 			cfg.Charts[i] = chart
@@ -71,16 +76,20 @@ func Diff(ctx context.Context, opts config.DiffOptions) error {
 		_, _ = os.Stdout.Write(diff)
 	}
 
-	if updated {
+	if updated && opts.Write {
 		logger.Println("Updating config file with new patches")
 		if err := config.Save(cfg, opts.Options); err != nil {
-			return err
+			return changed, err
 		}
 		logger.Println("Updating lockfile")
-		return config.UpdateLockfile(cfg, config.ApplyOptions{Options: opts.Options})
+		return changed, config.UpdateLockfile(cfg, config.ApplyOptions{Options: opts.Options})
 	}
 
-	return nil
+	if len(changed) == 0 {
+		logger.Println("All is up to date!")
+	}
+
+	return changed, nil
 }
 
 func getLatestPatch(name, workDir string) (string, error) {

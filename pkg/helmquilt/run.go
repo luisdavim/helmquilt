@@ -15,7 +15,8 @@ func Run(ctx context.Context, action Action, opts config.ApplyOptions) error {
 	logger := logger.FromContext(ctx)
 
 	if action == DiffAction {
-		return Diff(ctx, config.DiffOptions{Options: opts.Options})
+		_, err := Diff(ctx, config.DiffOptions{Options: opts.Options})
+		return err
 	}
 
 	cfg, err := config.Read(opts.ConfigFile)
@@ -40,9 +41,9 @@ func Run(ctx context.Context, action Action, opts config.ApplyOptions) error {
 
 	if action == CheckAction {
 		if changed {
-			return fmt.Errorf("some charts need to be cleaned")
+			return ErrDirtyCharts
 		}
-		return fmt.Errorf("not all charts are up to date")
+		return ErrChartsChanged
 	}
 
 	logger.Println("Updating Chart(s)")

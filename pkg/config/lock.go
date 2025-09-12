@@ -17,22 +17,27 @@ const (
 	OperationsPath = "operations"
 )
 
+// LockFile is the struture for the lock LockFile
+// where the tool keeps the checksums from the last update
 type LockFile struct {
 	Charts []ChartLock `json:"charts"`
 	Hash   string      `json:"hash"`
 }
 
+// ChartLock represents the state of an individual chart
 type ChartLock struct {
 	Name       string          `json:"name"`
 	Version    string          `json:"version"`
 	Components []CharPathtLock `json:"components"`
 }
 
+// CharPathtLock holds the checksums for the chart config components
 type CharPathtLock struct {
 	Path string `json:"path"`
 	Hash string `json:"hash"`
 }
 
+// ReadLockFile reads the a lock file from the given path
 func ReadLockFile(workDir string) (LockFile, error) {
 	var locks LockFile
 	lockFile := filepath.Join(workDir, lockFilename)
@@ -47,6 +52,7 @@ func ReadLockFile(workDir string) (LockFile, error) {
 	return locks, nil
 }
 
+// UpdateLockfile calculates all the checksums and crates or updates a lock file in the workDir
 func UpdateLockfile(cfg Config, opts ApplyOptions) error {
 	locks := LockFile{Charts: []ChartLock{}}
 

@@ -8,6 +8,11 @@ import (
 	"unicode"
 )
 
+// BumpFilename looks for a number at the end of the given file name and incremetns it by one
+// if the file name has no numbers at the end 1 is added to it
+// if a delimiter is provided, the number is added afer it
+// if a delimiter is provided and the given filename doesn't have it any number at the end of the file is ignored
+// and the delimiter followed by 1 is added to the end of the file
 func BumpFilename(filename, delim string, width int) string {
 	// decompose name
 	dir := filepath.Dir(filename)

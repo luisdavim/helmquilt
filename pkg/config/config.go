@@ -12,6 +12,7 @@ const DefaultConfigFile = "./helmquilt.yaml"
 
 var ErrMissingConfig = errors.New("missing config file")
 
+// Config represents the format for the main configuration file
 type Config struct {
 	Charts []Chart `json:"charts"`
 }
@@ -26,6 +27,8 @@ func (c *Config) SetDefaults() error {
 	return nil
 }
 
+// Read reads the configuration from a file at the given path
+// the file can either be in yaml or json format
 func Read(configFile string) (Config, error) {
 	var charts Config
 
@@ -41,6 +44,8 @@ func Read(configFile string) (Config, error) {
 	return charts, nil
 }
 
+// Save stores the in-memory configuration into a file at the given path
+// The file will be written in the yaml format
 func Save(cfg Config, opts Options) error {
 	if opts.DryRun {
 		return nil

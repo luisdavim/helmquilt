@@ -21,6 +21,7 @@ func validRelPath(p string) bool {
 	return true
 }
 
+// Compress archives the contents of the source path and stoes the tarball in the destinaton path
 func Compress(src, dst string) (string, error) {
 	f, err := os.Create(dst)
 	if err != nil {
@@ -32,6 +33,7 @@ func Compress(src, dst string) (string, error) {
 	return compress(src, f)
 }
 
+// Extract a tarball from the source path into the destinaton path
 func Extract(src, dst string) error {
 	f, err := os.Open(src)
 	if err != nil {
@@ -145,6 +147,7 @@ func extract(src io.ReadSeeker, dst string) error {
 		return err
 	}
 
+	// if the archive is compressed, wrap the reader
 	var reader io.Reader = src
 	if isGzipCompressed(testBytes) {
 		// ungzip
@@ -156,7 +159,10 @@ func extract(src io.ReadSeeker, dst string) error {
 
 	// untar
 	tr := tar.NewReader(reader)
+	return untar(dst, tr)
+}
 
+func untar(dst string, tr *tar.Reader) error {
 	// uncompress each element
 	for {
 		header, err := tr.Next()
@@ -211,7 +217,6 @@ func extract(src io.ReadSeeker, dst string) error {
 		}
 	}
 
-	//
 	return nil
 }
 

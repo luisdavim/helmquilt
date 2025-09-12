@@ -61,8 +61,8 @@ func DownloadFile(filepath, url string) error {
 	defer func() { _ = resp.Body.Close() }()
 
 	// Check server response
-	if resp.StatusCode != http.StatusOK {
-		return fmt.Errorf("bad status: %s", resp.Status)
+	if err := CheckResponse(resp); err != nil {
+		return err
 	}
 
 	// Writer the body to file
