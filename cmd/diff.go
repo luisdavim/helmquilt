@@ -26,6 +26,11 @@ Note that if you don't pin the source chart version and the remote chart is upda
 In this case, t is advisable that you run diff, or check with --upstream before maiking any changes to check if the upstream has changed.`,
 		Args:         cobra.ExactArgs(0),
 		SilenceUsage: true,
+		PreRunE: func(cmd *cobra.Command, args []string) error {
+			var err error
+			opts.Quiet, err = getQuietOption(cmd)
+			return err
+		},
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var err error
 			opts.ConfigFile, err = filepath.Abs(opts.ConfigFile)
@@ -40,7 +45,7 @@ In this case, t is advisable that you run diff, or check with --upstream before 
 			}
 			changed, err := helmquilt.Diff(cmd.Context(), opts)
 
-			if len(changed) != 0 {
+			if !opts.Quiet && len(changed) != 0 {
 				fmt.Fprintln(os.Stderr, "Changes where detected on the following charts:")
 				for _, name := range changed {
 					fmt.Fprintf(os.Stderr, "\t-%s\n", name)

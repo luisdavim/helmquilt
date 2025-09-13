@@ -63,22 +63,29 @@ func logDebug(format string, v ...any) {
 	fmt.Fprintf(os.Stderr, format, v...)
 }
 
-func PullChart(reg, chart, version, dst string) (string, error) {
+func logQuiet(_ string, _ ...any) {}
+
+func PullChart(reg, chart, version, dst string, debug bool) (string, error) {
 	if dst == "" {
 		dst = "."
 	}
 	// registry client
 	registryClient, err := registry.NewClient(
-		registry.ClientOptDebug(false),
+		registry.ClientOptDebug(debug),
 		registry.ClientOptEnableCache(false),
 	)
 	if err != nil {
 		return "", err
 	}
 
+	log := logQuiet
+	if debug {
+		log = logDebug
+	}
+
 	// init helm action config
 	actionConfig := new(action.Configuration)
-	if err := actionConfig.Init(nil, "", "secret", logDebug); err != nil {
+	if err := actionConfig.Init(nil, "", "secret", log); err != nil {
 		return "", err
 	}
 

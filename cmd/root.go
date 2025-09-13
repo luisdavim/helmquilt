@@ -12,6 +12,10 @@ import (
 	"github.com/luisdavim/helmquilt/pkg/logger"
 )
 
+const (
+	quietFlag = "quiet"
+)
+
 var ErrHelmquilt = errors.New("")
 
 // wrap the returned error with a custom one so we can distinguish usage errors and print the usage help
@@ -25,6 +29,10 @@ func checkErr(err error) error {
 	}
 
 	return fmt.Errorf("%w%w", ErrHelmquilt, err)
+}
+
+func getQuietOption(cmd *cobra.Command) (bool, error) {
+	return cmd.InheritedFlags().GetBool(quietFlag)
 }
 
 func New() *cobra.Command {
@@ -47,7 +55,7 @@ func New() *cobra.Command {
 		},
 	}
 
-	rootCmd.PersistentFlags().BoolVarP(&quiet, "quiet", "q", false, "Silence the logs")
+	rootCmd.PersistentFlags().BoolVarP(&quiet, quietFlag, "q", false, "Silence the logs")
 	rootCmd.AddCommand(applyCmd(), checkCmd(), diffCmd())
 
 	return rootCmd

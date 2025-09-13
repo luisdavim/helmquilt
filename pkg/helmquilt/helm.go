@@ -68,7 +68,7 @@ func fetchChart(ctx context.Context, source config.Source, chartDownloadDir stri
 	}
 
 	// the source is an OCI registry
-	chartDownloadPath, err := utils.PullChart(source.URL, source.ChartName, source.Version, chartDownloadDir)
+	chartDownloadPath, err := utils.PullChart(source.URL, source.ChartName, source.Version, chartDownloadDir, false)
 	if err != nil {
 		return "", err
 	}

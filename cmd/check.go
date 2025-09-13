@@ -12,10 +12,7 @@ import (
 )
 
 func checkCmd() *cobra.Command {
-	var (
-		opts     config.Options
-		upstream bool
-	)
+	var opts config.CheckOptions
 
 	cmd := &cobra.Command{
 		Use:   "check",
@@ -28,6 +25,11 @@ By default the check command only looks at the lock file, if you don't pin the s
 you can use --upstream to check against the upstream charts.`,
 		Args:         cobra.ExactArgs(0),
 		SilenceUsage: true,
+		PreRunE: func(cmd *cobra.Command, args []string) error {
+			var err error
+			opts.Quiet, err = getQuietOption(cmd)
+			return err
+		},
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var err error
 			opts.ConfigFile, err = filepath.Abs(opts.ConfigFile)
@@ -40,8 +42,8 @@ you can use --upstream to check against the upstream charts.`,
 
 			opts.DryRun = true
 
-			if upstream {
-				changed, err := helmquilt.Diff(cmd.Context(), config.DiffOptions{Options: opts})
+			if opts.Upstream {
+				changed, err := helmquilt.Diff(cmd.Context(), config.DiffOptions{Options: opts.Options})
 
 				if len(changed) != 0 {
 					fmt.Fprintln(os.Stderr, "\nChanges where detected on the following charts:")
@@ -57,12 +59,11 @@ you can use --upstream to check against the upstream charts.`,
 
 				return checkErr(err)
 			}
-			return checkErr(helmquilt.Run(cmd.Context(), helmquilt.CheckAction, config.ApplyOptions{Options: opts}))
+			return checkErr(helmquilt.Run(cmd.Context(), helmquilt.CheckAction, config.ApplyOptions{Options: opts.Options}))
 		},
 	}
 
 	opts.AddFlags(cmd)
-	cmd.Flags().BoolVarP(&upstream, "upstream", "r", false, "check against the upstream")
 
 	return cmd
 }

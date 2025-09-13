@@ -7,6 +7,7 @@ type Options struct {
 	ConfigFile string
 	WorkDir    string
 	DryRun     bool
+	Quiet      bool
 }
 
 // AddFlags adds the flags for this set of options to the given command
@@ -39,4 +40,16 @@ type DiffOptions struct {
 func (opts *DiffOptions) AddFlags(cmd *cobra.Command) {
 	opts.Options.AddFlags(cmd)
 	cmd.Flags().BoolVarP(&opts.Write, "write", "w", false, "Write patch files")
+}
+
+// CheckOptions represents the CLI options for the check command
+type CheckOptions struct {
+	Options
+	Upstream bool
+}
+
+// AddFlags adds the flags for this set of options to the given command
+func (opts *CheckOptions) AddFlags(cmd *cobra.Command) {
+	opts.Options.AddFlags(cmd)
+	cmd.Flags().BoolVarP(&opts.Upstream, "upstream", "r", false, "check against the upstream")
 }
