@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	"fmt"
-	"os"
 	"path/filepath"
 
 	"github.com/spf13/cobra"
@@ -40,26 +38,7 @@ you can use --upstream to check against the upstream charts.`,
 				opts.WorkDir = filepath.Dir(opts.ConfigFile)
 			}
 
-			opts.DryRun = true
-
-			if opts.Upstream {
-				changed, err := helmquilt.Diff(cmd.Context(), config.DiffOptions{Options: opts.Options})
-
-				if len(changed) != 0 {
-					fmt.Fprintln(os.Stderr, "\nChanges where detected on the following charts:")
-					for _, name := range changed {
-						fmt.Fprintf(os.Stderr, "\t-%s\n", name)
-					}
-					fmt.Fprintln(os.Stderr, "")
-
-					if err == nil {
-						err = helmquilt.ErrChartsChanged
-					}
-				}
-
-				return checkErr(err)
-			}
-			return checkErr(helmquilt.Run(cmd.Context(), helmquilt.CheckAction, config.ApplyOptions{Options: opts.Options}))
+			return checkErr(helmquilt.Check(cmd.Context(), opts))
 		},
 	}
 
