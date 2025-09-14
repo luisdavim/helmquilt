@@ -54,13 +54,12 @@ func Run(ctx context.Context, action Action, opts config.ApplyOptions) error {
 		if err := chart.SetDefaults(); err != nil {
 			return err
 		}
-		destDir := filepath.Join(opts.WorkDir, chart.Path)
 		chartDownloadPath, err := fetchChart(ctx, chart.Source, tempDir)
 		if err != nil {
 			return err
 		}
 
-		chartDestDir := filepath.Join(destDir, chart.Source.ChartName)
+		chartDestDir := chart.GetFullName(opts.WorkDir)
 		if _, err := os.Stat(chartDestDir); err == nil {
 			if err := os.RemoveAll(chartDestDir); err != nil {
 				return fmt.Errorf("failed to clear %s for the new chart: %w", chartDestDir, err)

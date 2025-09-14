@@ -43,8 +43,8 @@ func Diff(ctx context.Context, opts config.DiffOptions) ([]string, error) {
 	)
 
 	for i, chart := range cfg.Charts {
-		oldChart := filepath.Join(tempDir, chart.Path, chart.Source.ChartName)
-		newChart := filepath.Join(opts.WorkDir, chart.Path, chart.Source.ChartName)
+		oldChart := chart.GetFullName(tempDir)
+		newChart := chart.GetFullName(opts.WorkDir)
 
 		logger.Printf("Comparing %s with %s", oldChart, newChart)
 		diff, err := utils.DiffDirs(oldChart, newChart)

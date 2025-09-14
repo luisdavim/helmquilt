@@ -46,13 +46,14 @@ type Source struct {
 	ChartPath string `json:"chartPath,omitempty"`
 }
 
+// Move represents a move/rename operation
 type Move struct {
 	Source string `json:"source,omitempty"`
 	Dest   string `json:"dest,omitempty"`
 }
 
 func (c *Chart) GetName() string {
-	return filepath.Join(c.Path, c.Source.ChartName)
+	return filepath.Join(c.Path, c.Name)
 }
 
 func (c *Chart) GetFullName(workDir string) string {
