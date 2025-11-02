@@ -10,7 +10,7 @@ require (
 	github.com/spf13/cobra v1.10.1
 	golang.org/x/mod v0.29.0
 	helm.sh/helm/v3 v3.19.0
-	helm.sh/helm/v4 v4.0.0-beta.1
+	helm.sh/helm/v4 v4.0.0-beta.2
 	sigs.k8s.io/yaml v1.6.0
 )
 
