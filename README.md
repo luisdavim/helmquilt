@@ -8,6 +8,7 @@ Like `quilt`, `helmquilt`, allows you to apply a set of patches on top of a dire
 It can pull helm charts from different sources, like helm repositories, OCI registries and git repositories. And it knows about the `Chart.yaml` file, allowing you to easily manage the chart version after your patches have been applied.
 On top of being able to apply patches, `helmquilt` can also perform some filesystem operations, like removing or renaming files or directories.
 Helmquilt can also help you create the patch files. Fetch the charts you need, make your changes and then run `helmquilt diff -w` to get the patch files generated and added to your configuration.
+Helmquilt also knows how to pack and unpack helm charts.
 All this is controlled through a easy to read `YAML` configuration file.
 
 Some times, as a platform engineer, you need to manage a set of costomisations on top of upstream helm charts, this can make keeping them up-to-date hard.

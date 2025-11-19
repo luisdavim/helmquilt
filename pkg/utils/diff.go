@@ -19,7 +19,7 @@ func DiffFiles(oldName, newName string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	diff := diff.Diff(oldName, oldB, newName, newB)
+	diff := safeDiff(oldName, oldB, newName, newB)
 
 	return diff, nil
 }
@@ -58,7 +58,7 @@ func DiffDirs(oldDir, newDir string) ([]byte, error) {
 			newB = []byte("")
 		}
 
-		d := diff.Diff(relName, oldB, relName, newB)
+		d := safeDiff(relName, oldB, relName, newB)
 		if len(d) != 0 {
 			_, _ = allDiffs.WriteString("\n")
 			_, _ = allDiffs.Write(d)
@@ -76,7 +76,7 @@ func DiffDirs(oldDir, newDir string) ([]byte, error) {
 			return nil, err
 		}
 
-		d := diff.Diff(relName, []byte(""), relName, newB)
+		d := safeDiff(relName, []byte(""), relName, newB)
 		if len(d) != 0 {
 			_, _ = allDiffs.WriteString("\n")
 			_, _ = allDiffs.Write(d)
@@ -87,6 +87,16 @@ func DiffDirs(oldDir, newDir string) ([]byte, error) {
 		_, _ = allDiffs.WriteString("\n")
 	}
 	return allDiffs.Bytes(), nil
+}
+
+func safeDiff(oldName string, old []byte, newName string, new []byte) []byte {
+	d := diff.Diff(oldName, old, newName, new)
+
+	if IsBinaryData(d) {
+		return fmt.Appendf([]byte{}, "### %s and %s are different but contain binary data\n", oldName, newName)
+	}
+
+	return d
 }
 
 func readDir(root string) (map[string]bool, error) {
