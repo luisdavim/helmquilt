@@ -93,7 +93,8 @@ func safeDiff(oldName string, old []byte, newName string, new []byte) []byte {
 	d := diff.Diff(oldName, old, newName, new)
 
 	if IsBinaryData(d) {
-		return fmt.Appendf([]byte{}, "### %s and %s are different but contain binary data\n", oldName, newName)
+		fmt.Fprintf(os.Stderr, "\n### WARN: %s and %s are different but contain binary data ###\n", oldName, newName)
+		return nil
 	}
 
 	return d

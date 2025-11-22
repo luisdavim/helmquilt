@@ -38,9 +38,11 @@ func IsTextFile(file io.ReadSeeker) (isText bool, rerr error) {
 // non-printable characters.
 func IsBinaryData(data []byte) bool {
 	n := 4096
-	if l := len(data); l < n {
-		n = l
+	n = min(n, len(data))
+	if n == 0 {
+		return false
 	}
+
 	if utf8.ValidString(string(data[:n])) {
 		return false
 	}

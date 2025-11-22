@@ -7,11 +7,11 @@ import (
 	"os"
 	"path/filepath"
 
-	"helm.sh/helm/v3/pkg/action"
-	"helm.sh/helm/v3/pkg/cli"
-	"helm.sh/helm/v3/pkg/registry"
-	helmrepo "helm.sh/helm/v3/pkg/repo"
+	"helm.sh/helm/v4/pkg/action"
 	helmchart "helm.sh/helm/v4/pkg/chart/v2"
+	"helm.sh/helm/v4/pkg/cli"
+	"helm.sh/helm/v4/pkg/registry"
+	helmrepo "helm.sh/helm/v4/pkg/repo/v1"
 	"sigs.k8s.io/yaml"
 )
 
@@ -78,21 +78,16 @@ func PullChart(reg, chart, version, dst string, debug bool) (string, error) {
 		return "", err
 	}
 
-	log := logQuiet
-	if debug {
-		log = logDebug
-	}
-
 	// init helm action config
 	actionConfig := new(action.Configuration)
-	if err := actionConfig.Init(nil, "", "secret", log); err != nil {
+	if err := actionConfig.Init(nil, "", "secret"); err != nil {
 		return "", err
 	}
 
 	actionConfig.RegistryClient = registryClient
 
 	// pull the chart
-	pull := action.NewPullWithOpts(action.WithConfig(actionConfig))
+	pull := action.NewPull(action.WithConfig(actionConfig))
 	pull.Settings = cli.New() // didn't want to do this but otherwise it goes nil pointer
 	pull.Version = version
 	pull.DestDir = dst
