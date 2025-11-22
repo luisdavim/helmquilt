@@ -59,12 +59,6 @@ func DownloadChart(repo, chart, version, dst string) (string, error) {
 	return "", fmt.Errorf("no matching version %q for %q", version, chart)
 }
 
-func logDebug(format string, v ...any) {
-	fmt.Fprintf(os.Stderr, format, v...)
-}
-
-func logQuiet(_ string, _ ...any) {}
-
 func PullChart(reg, chart, version, dst string, debug bool) (string, error) {
 	if dst == "" {
 		dst = "."
