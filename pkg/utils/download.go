@@ -40,9 +40,7 @@ func HTTPGet(url string) ([]byte, error) {
 		return nil, err
 	}
 
-	data, err := io.ReadAll(resp.Body)
-
-	return data, err
+	return io.ReadAll(resp.Body)
 }
 
 func DownloadFile(filepath, url string) error {
@@ -65,7 +63,7 @@ func DownloadFile(filepath, url string) error {
 		return err
 	}
 
-	// Writer the body to file
+	// Write the body to file
 	_, err = io.Copy(out, resp.Body)
 	if err != nil {
 		return err

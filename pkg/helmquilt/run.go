@@ -100,10 +100,10 @@ func Run(ctx context.Context, action Action, opts config.ApplyOptions) error {
 			if err != nil {
 				return fmt.Errorf("failed to repack %q: %w", chart.GetName(), err)
 			}
+			logger.Printf("Chart saved to %q; checksum: %q\n", dst, sum)
 			if err := os.RemoveAll(chartDestDir); err != nil {
 				return fmt.Errorf("failed to remove unpacked chart: %w", err)
 			}
-			logger.Printf("Chart saved to %q; checksum: %q\n", dst, sum)
 		}
 	}
 
