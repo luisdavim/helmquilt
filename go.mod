@@ -9,7 +9,7 @@ require (
 	github.com/rogpeppe/go-internal v1.14.1
 	github.com/spf13/cobra v1.10.1
 	golang.org/x/mod v0.30.0
-	helm.sh/helm/v4 v4.0.0
+	helm.sh/helm/v4 v4.0.1
 	sigs.k8s.io/yaml v1.6.0
 )
 
