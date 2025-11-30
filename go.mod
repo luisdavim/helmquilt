@@ -4,7 +4,7 @@ go 1.24.5
 
 require (
 	github.com/bluekeyes/go-gitdiff v0.8.1
-	github.com/go-git/go-git/v5 v5.16.3
+	github.com/go-git/go-git/v5 v5.16.4
 	github.com/hashicorp/go-retryablehttp v0.7.8
 	github.com/rogpeppe/go-internal v1.14.1
 	github.com/spf13/cobra v1.10.1
