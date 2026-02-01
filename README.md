@@ -11,10 +11,12 @@ Helmquilt can also help you create the patch files. Fetch the charts you need, m
 Helmquilt also knows how to pack and unpack helm charts.
 All this is controlled through a easy to read `YAML` configuration file.
 
+## Why Helmquilt
+
 Some times, as a platform engineer, you need to manage a set of costomisations on top of upstream helm charts, this can make keeping them up-to-date hard.
 Helmquilt allows you to fetch the upstream helm chart at a specified version and apply your changes with ease, as long as your patches still apply, you can update the chart by just pulling a newer version and applying your changes again.
 This becomes specially useful in environments where mono-repos are used and you can't really fork an upstream helm chart. This allows you to keep a modified copy of a helm chart and still be able to pull upstream changes.
-The tool does suppot `git` as a source, so, in theory, it could be used with anything and not just helm charts...
+The tool does suppot `git` as a source, so, in theory, with some tweaks, it could be used with anything and not just helm charts...
 
 ## Usage
 
