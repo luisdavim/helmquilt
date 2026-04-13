@@ -8,7 +8,7 @@ require (
 	github.com/hashicorp/go-retryablehttp v0.7.8
 	github.com/rogpeppe/go-internal v1.14.1
 	github.com/spf13/cobra v1.10.2
-	golang.org/x/mod v0.34.0
+	golang.org/x/mod v0.35.0
 	helm.sh/helm/v4 v4.1.4
 	sigs.k8s.io/yaml v1.6.0
 )
