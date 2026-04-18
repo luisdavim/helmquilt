@@ -30,6 +30,21 @@ archives:
       {{- else if eq .Arch "386" }}i386
       {{- else }}{{ .Arch }}{{ end }}
       {{- if .Arm }}v{{ .Arm }}{{ end }}
+brews:
+  - name: helmquilt
+    repository:
+      owner: luisdavim
+      name: helmquilt
+      branch: main
+    directory: Formula
+    description: "Watch a command and generate diffs from the output changes"
+    homepage: "https://github.com/luisdavim/helmquilt"
+    license: "MIT"
+    download_strategy: CurlDownloadStrategy
+    install: |
+      bin.install "helmquilt"
+    test: |
+      system "#{bin}/helmquilt", "-h"
 checksum:
   name_template: "checksums.txt"
 snapshot:
