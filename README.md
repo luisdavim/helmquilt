@@ -24,10 +24,11 @@ If you use `hommebrew`:
 
 ```sh
 brew tap luisdavim/helmquilt
-brew install watchdiff
+brew install helmquilt
 ```
 
 If not, download the binaries directly fromm the releases page in this repo.
+There is also a Docker image in the packages page.
 
 ## Usage
 
