@@ -18,6 +18,17 @@ Helmquilt allows you to fetch the upstream helm chart at a specified version and
 This becomes specially useful in environments where mono-repos are used and you can't really fork an upstream helm chart. This allows you to keep a modified copy of a helm chart and still be able to pull upstream changes.
 The tool does suppot `git` as a source, so, in theory, with some tweaks, it could be used with anything and not just helm charts...
 
+## Installation
+
+If you use `hommebrew`:
+
+```sh
+brew tap luisdavim/helmquilt
+brew install watchdiff
+```
+
+If not, download the binaries directly fromm the releases page in this repo.
+
 ## Usage
 
 see `helmquilt -h`
