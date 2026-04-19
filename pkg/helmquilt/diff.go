@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 	"slices"
 
+	"github.com/alecthomas/chroma/v2/quick"
 	"github.com/luisdavim/helmquilt/pkg/config"
 	"github.com/luisdavim/helmquilt/pkg/logger"
 	"github.com/luisdavim/helmquilt/pkg/utils"
@@ -42,6 +43,13 @@ func Diff(ctx context.Context, opts config.DiffOptions) ([]string, error) {
 		changed []string
 	)
 
+	var color bool
+	if info, err := os.Stdout.Stat(); err == nil {
+		if (info.Mode() & os.ModeCharDevice) == os.ModeCharDevice {
+			color = true
+		}
+	}
+
 	for i, chart := range cfg.Charts {
 		oldChart := chart.GetFullName(tempDir)
 		newChart := chart.GetFullName(opts.WorkDir)
@@ -73,7 +81,11 @@ func Diff(ctx context.Context, opts config.DiffOptions) ([]string, error) {
 			updated = true
 		}
 
-		_, _ = os.Stdout.Write(diff)
+		if color {
+			_ = quick.Highlight(os.Stdout, string(diff), "diff", "terminal", "native")
+		} else {
+			_, _ = os.Stdout.Write(diff)
+		}
 	}
 
 	if updated && opts.Write {
