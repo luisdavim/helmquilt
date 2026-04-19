@@ -1,7 +1,7 @@
 diff values.yaml values.yaml
 --- values.yaml
 +++ values.yaml
-@@ -42,7 +42,7 @@
+@@ -57,7 +57,7 @@
      # cpu: 1000m
      # memory: 1Gi
      requests:
@@ -10,7 +10,7 @@ diff values.yaml values.yaml
        memory: 64Mi
    priorityClassName: ""
    annotations:
-@@ -233,7 +233,6 @@
+@@ -248,7 +248,6 @@
        #    hosts:
        #      - flux-webhook.example.com
 
