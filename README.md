@@ -23,7 +23,7 @@ The tool does suppot `git` as a source, so, in theory, with some tweaks, it coul
 If you use `hommebrew`:
 
 ```sh
-brew tap luisdavim/helmquilt
+brew tap luisdavim/helmquilt https://github.com/luisdavim/helmquilt
 brew install helmquilt
 ```
 
