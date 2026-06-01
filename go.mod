@@ -3,7 +3,7 @@ module github.com/luisdavim/helmquilt
 go 1.26.0
 
 require (
-	github.com/alecthomas/chroma/v2 v2.24.1
+	github.com/alecthomas/chroma/v2 v2.26.1
 	github.com/bluekeyes/go-gitdiff v0.8.1
 	github.com/go-git/go-git/v5 v5.19.1
 	github.com/hashicorp/go-retryablehttp v0.7.8
@@ -33,6 +33,7 @@ require (
 	github.com/cyphar/filepath-securejoin v0.6.1 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/dlclark/regexp2 v1.12.0 // indirect
+	github.com/dlclark/regexp2/v2 v2.1.1 // indirect
 	github.com/dylibso/observe-sdk/go v0.0.0-20240819160327-2d926c5d788a // indirect
 	github.com/emicklei/go-restful/v3 v3.13.0 // indirect
 	github.com/emirpasic/gods v1.18.1 // indirect
