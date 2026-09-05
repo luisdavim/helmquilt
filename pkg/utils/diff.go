@@ -29,11 +29,11 @@ func DiffDirs(oldDir, newDir string) ([]byte, error) {
 
 	oldFiles, err := readDir(oldDir)
 	if err != nil {
-		return nil, fmt.Errorf("faild to read from %s: %w", oldDir, err)
+		return nil, fmt.Errorf("failed to read from %s: %w", oldDir, err)
 	}
 	newFiles, err := readDir(newDir)
 	if err != nil {
-		return nil, fmt.Errorf("faild to read from %s: %w", newDir, err)
+		return nil, fmt.Errorf("failed to read from %s: %w", newDir, err)
 	}
 
 	for oldName := range oldFiles {

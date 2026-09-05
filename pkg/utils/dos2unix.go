@@ -27,7 +27,7 @@ func Dos2Unix(filename string) error {
 	}
 	defer func() { _ = infile.Close() }()
 
-	// TODO: the following 2 checks could be optimised by reading the first 4Kb of the file once and reuseing it for each check
+	// TODO: the following 2 checks could be optimised by reading the first 4Kb of the file once and reusing it for each check
 	if isText, err := IsTextFile(infile); !isText || err != nil {
 		return err
 	}

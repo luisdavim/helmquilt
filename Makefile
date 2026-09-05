@@ -98,7 +98,7 @@ deps: ## Fetch dependencies
 	$(GOCMD) get
 	$(GOCMD) mod tidy
 
-update-deps: ## Update depdendencies
+update-deps: ## Update dependencies
 	# $(GOCMD) get -u
 	awk '/require \(/,/\)/ {x = ($$0 !~ /(require|\)|.*indirect)/) ? $$0 : ""; split(x,a," "); print a[1]}' go.mod | sed '/^$$/d' | xargs -L1 $(GOCMD) get -u
 	$(GOCMD) mod tidy

@@ -17,7 +17,7 @@ const (
 	OperationsPath = "operations"
 )
 
-// LockFile is the struture for the lock LockFile
+// LockFile is the structure for the lock LockFile
 // where the tool keeps the checksums from the last update
 type LockFile struct {
 	Charts []ChartLock `json:"charts"`
@@ -129,6 +129,6 @@ func UpdateLockfile(cfg Config, opts ApplyOptions) error {
 		return fmt.Errorf("failed to update config file: %w", err)
 	}
 
-	// TODO: is this needed? in the current implementaion this will drop any file comments
+	// TODO: is this needed? in the current implementation this will drop any file comments
 	return Save(cfg, opts.Options)
 }

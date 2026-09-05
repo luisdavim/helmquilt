@@ -16,7 +16,7 @@ All this is controlled through a easy to read `YAML` configuration file.
 Some times, as a platform engineer, you need to manage a set of costomisations on top of upstream helm charts, this can make keeping them up-to-date hard.
 Helmquilt allows you to fetch the upstream helm chart at a specified version and apply your changes with ease, as long as your patches still apply, you can update the chart by just pulling a newer version and applying your changes again.
 This becomes specially useful in environments where mono-repos are used and you can't really fork an upstream helm chart. This allows you to keep a modified copy of a helm chart and still be able to pull upstream changes.
-The tool does suppot `git` as a source, so, in theory, with some tweaks, it could be used with anything and not just helm charts...
+The tool does support `git` as a source, so, in theory, with some tweaks, it could be used with anything and not just helm charts...
 
 ## Installation
 
@@ -27,7 +27,7 @@ brew tap luisdavim/helmquilt https://github.com/luisdavim/helmquilt
 brew install helmquilt
 ```
 
-If not, download the binaries directly fromm the releases page in this repo.
+If not, download the binaries directly from the releases page in this repo.
 There is also a Docker image in the packages page.
 
 ## Usage
@@ -98,19 +98,19 @@ In the `example` folder the `example/patches/coredns1.patch` was created using `
 If you already have some modified charts that you'd like to upgrade without loosing your changes, you can try:
 
 1. Create a `helmquilt.yaml` file matching the charts and versions you already have.
-2. Run `helmquilt diff`, this shold give you the diffs with your changes.
+2. Run `helmquilt diff`, this should give you the diffs with your changes.
 3. Save the diffs into patch files, you can use the `-w` option in `helmquilt diff`
 4. Update the `helmquilt.yaml` config file with the versions you want to update to.
 5. Run `helmquilt apply` to update the lock file with the new checksums
 
-As long as your patches still apply to the new versions, you shold get the new versions of the charts with your changes on top.
+As long as your patches still apply to the new versions, you should get the new versions of the charts with your changes on top.
 
 #### Combine multiple patches into one
 
 If you've been using the tool for a while and have accumulated many changes in separate patch files, you can try the following to combine all changes into a single patch.
 
-1. run `helmquilt apply`, just to be sure everythig is up-to-date
+1. run `helmquilt apply`, just to be sure everything is up-to-date
 2. delete the patch files and remove them from the `helmquilt.yaml` config
 3. without any additional changes, run `helmquilt diff` with the `-w` option
 
-This shold generate a single path file (per chart) with all the combined changes
+This should generate a single path file (per chart) with all the combined changes

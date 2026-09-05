@@ -21,7 +21,7 @@ func validRelPath(p string) bool {
 	return true
 }
 
-// Compress archives the contents of the source path and stoes the tarball in the destinaton path
+// Compress archives the contents of the source path and stoes the tarball in the destination path
 func Compress(src, dst string) (string, error) {
 	f, err := os.Create(dst)
 	if err != nil {
@@ -33,7 +33,7 @@ func Compress(src, dst string) (string, error) {
 	return compress(src, f)
 }
 
-// Extract a tarball from the source path into the destinaton path
+// Extract a tarball from the source path into the destination path
 func Extract(src, dst string) error {
 	f, err := os.Open(src)
 	if err != nil {
@@ -211,7 +211,7 @@ func untar(dst string, tr *tar.Reader) error {
 			if _, err := io.Copy(fileToWrite, tr); err != nil {
 				return err
 			}
-			// manually close here after each file operation; defering would cause each file close
+			// manually close here after each file operation; deferring would cause each file close
 			// to wait until all operations have completed.
 			_ = fileToWrite.Close()
 		}

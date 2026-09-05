@@ -74,7 +74,7 @@ func Diff(ctx context.Context, opts config.DiffOptions) ([]string, error) {
 			}
 			logger.Printf("Writing path file: %s", file)
 			if err := os.WriteFile(file, diff, 0o644); err != nil {
-				return changed, fmt.Errorf("faild to write patch file: %w", err)
+				return changed, fmt.Errorf("failed to write patch file: %w", err)
 			}
 			chart.Patches = append(chart.Patches, filepath.Base(file))
 			cfg.Charts[i] = chart

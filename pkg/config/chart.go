@@ -16,7 +16,7 @@ type Chart struct {
 	Source Source `json:"source,omitempty"`
 	// Patches is the set of patch files to apply to this chart
 	Patches []string `json:"patches,omitempty"`
-	// Repack indicates wether or not the chart should be stored as a tarball
+	// Repack indicates weather or not the chart should be stored as a tarball
 	Repack         bool `json:"repack,omitempty"`
 	FileOperations `json:",inline"`
 }
@@ -24,7 +24,7 @@ type Chart struct {
 type FileOperations struct {
 	// Remove is a list of files or directories to delete from the chart
 	Remove []string `json:"remove,omitempty"`
-	// Keep defines what files or directories to keep fromm the original chart
+	// Keep defines what files or directories to keep from the original chart
 	// when set, any path not included in this list will be removed
 	Keep []string `json:"keep,omitempty"`
 	// Move is a set of instructions for renaming chart content
@@ -66,7 +66,7 @@ func (c *Chart) GetTarName() string {
 
 func (c *Chart) SetDefaults() error {
 	if c.Name == "" && c.Source.ChartName == "" {
-		return fmt.Errorf("a chart name is requied")
+		return fmt.Errorf("a chart name is required")
 	}
 	if c.Name == "" {
 		c.Name = c.Source.ChartName

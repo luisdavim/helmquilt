@@ -10,7 +10,7 @@ import (
 
 // BumpFilename looks for a number at the end of the given file name and incremetns it by one
 // if the file name has no numbers at the end 1 is added to it
-// if a delimiter is provided, the number is added afer it
+// if a delimiter is provided, the number is added after it
 // if a delimiter is provided and the given filename doesn't have it any number at the end of the file is ignored
 // and the delimiter followed by 1 is added to the end of the file
 func BumpFilename(filename, delim string, width int) string {
@@ -20,7 +20,7 @@ func BumpFilename(filename, delim string, width int) string {
 	ext := filepath.Ext(filename)
 	fname := filename[:len(filename)-len(ext)]
 
-	// handle the delimiter and only take into account the parts of the name after the last occurence of the delimiter
+	// handle the delimiter and only take into account the parts of the name after the last occurrence of the delimiter
 	var prefix string
 	if delim != "" {
 		idx := strings.LastIndex(fname, delim)

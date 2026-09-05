@@ -35,7 +35,7 @@ func DownloadChart(repo, chart, version, dst string) (string, error) {
 
 	var idx helmrepo.IndexFile
 	if err := yaml.Unmarshal(data, &idx); err != nil {
-		return "", fmt.Errorf("faield to read index: %w", err)
+		return "", fmt.Errorf("failed to read index: %w", err)
 	}
 
 	// lookup the chart version in the index

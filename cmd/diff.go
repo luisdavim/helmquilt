@@ -22,7 +22,7 @@ Check if changes were made and return the differences.
 It will pull the charts into a temporary location using the config and compare that with the current state of the WorkDir.
 By default it will only print the diffs but it can also store them in files and autommatically add them to the config.
 
-Note that if you don't pin the source chart version and the remote chart is updaed, diff will return the differences between the local and the remote.
+Note that if you don't pin the source chart version and the remote chart is updated, diff will return the differences between the local and the remote.
 In this case, t is advisable that you run diff, or check with --upstream before maiking any changes to check if the upstream has changed.`,
 		Args:         cobra.ExactArgs(0),
 		SilenceUsage: true,

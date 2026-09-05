@@ -19,12 +19,12 @@ func New(name string, out io.Writer) *log.Logger {
 	return log.New(out, fmt.Sprintf("[%s] ", name), log.LstdFlags)
 }
 
-// NewContext returns a derived contex with a logger as a child of the given context
+// NewContext returns a derived context with a logger as a child of the given context
 func NewContext(ctx context.Context, name string, out io.Writer) context.Context {
 	return IntoContext(ctx, New(name, out))
 }
 
-// IntoContext returns a derived context that points to the given parent contex and the provided logger
+// IntoContext returns a derived context that points to the given parent context and the provided logger
 func IntoContext(ctx context.Context, logger *log.Logger) context.Context {
 	return context.WithValue(ctx, loggerKey, logger)
 }
