@@ -22,8 +22,7 @@ const (
 func DownloadChart(repo, chart, version, dst string) (string, error) {
 	data, err := HTTPGet(repo + "/index.yaml")
 	if err != nil {
-		var httpErr *ErrHTTP
-		if errors.As(err, &httpErr) {
+		if httpErr, ok := errors.AsType[*ErrHTTP](err); ok {
 			if httpErr.Code == http.StatusNotFound {
 				data, err = HTTPGet(repo + "/index.json")
 			}
